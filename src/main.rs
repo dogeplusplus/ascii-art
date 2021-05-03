@@ -41,7 +41,6 @@ fn convert(img: image::DynamicImage, columns: u32, scale: f32) -> Vec<String> {
                 x_offset = width - x;
             }
             let cropped_section = image::imageops::crop(&mut grayscale, x, y, x_offset, y_offset);
-            // println!("{} {} {} {}", x, y, x_offset, y_offset);
             let avg_pixel = image_average(cropped_section.to_image());
             let idx = ((avg_pixel * 9) / 255) as usize;
             let ascii_val = ASCII_VALUES[idx] as char;
