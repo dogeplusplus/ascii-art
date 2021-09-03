@@ -22,7 +22,7 @@ fn convert(img: image::DynamicImage, columns: u32, scale: f32) -> Vec<String> {
 
     let rows = (height as f32 / tile_height) as u32;
     let mut ascii_image: Vec<String> = Vec::new();
-    
+
     for i in 0..rows {
         let y = i * tile_height as u32;
         let mut y_offset = tile_height as u32;
@@ -52,44 +52,54 @@ fn convert(img: image::DynamicImage, columns: u32, scale: f32) -> Vec<String> {
 }
 
 
-fn main() -> io::Result<()> {
-    let matches = App::new("ASCII Art Generator")
-        .version("0.0.1")
-        .author("Albert Chung")
-        .about("Convert images into ascii art.")
-        .arg(Arg::with_name("image-path")
-            .short("i")
-            .long("image-path")
-            .takes_value(true)
-            .help("Path to the image"))
-        .arg(Arg::with_name("output")
-            .short("o")
-            .long("output")
-            .takes_value(true)
-            .help("Path to the output file"))
-        .arg(Arg::with_name("scale")
-            .short("s")
-            .long("scale")
-            .default_value("0.43")
-            .takes_value(true)
-            .help("Image scale"))
-        .arg(Arg::with_name("columns")
-            .short("c")
-            .long("columns")
-            .takes_value(true)
-            .default_value("70")
-            .help("Number of columns in ascii image"))
-        .get_matches();
-    
-    let image_path = matches.value_of("image-path").unwrap();
-    let output = matches.value_of("output").unwrap_or("output.txt");
-    let scale: f32 = matches.value_of("scale").unwrap().parse().unwrap();
-    let columns: u32 = matches.value_of("columns").unwrap().parse().unwrap();
+// fn main() -> io::Result<()> {
+//     let matches = App::new("ASCII Art Generator")
+//         .version("0.0.1")
+//         .author("Albert Chung")
+//         .about("Convert images into ascii art.")
+//         .arg(Arg::with_name("image-path")
+//             .short("i")
+//             .long("image-path")
+//             .takes_value(true)
+//             .help("Path to the image"))
+//         .arg(Arg::with_name("output")
+//             .short("o")
+//             .long("output")
+//             .takes_value(true)
+//             .help("Path to the output file"))
+//         .arg(Arg::with_name("scale")
+//             .short("s")
+//             .long("scale")
+//             .default_value("0.43")
+//             .takes_value(true)
+//             .help("Image scale"))
+//         .arg(Arg::with_name("columns")
+//             .short("c")
+//             .long("columns")
+//             .takes_value(true)
+//             .default_value("70")
+//             .help("Number of columns in ascii image"))
+//         .get_matches();
 
+//     let image_path = matches.value_of("image-path").unwrap();
+//     let output = matches.value_of("output").unwrap_or("output.txt");
+//     let scale: f32 = matches.value_of("scale").unwrap().parse().unwrap();
+//     let columns: u32 = matches.value_of("columns").unwrap().parse().unwrap();
+
+//     let img = image::open(image_path).unwrap();
+//     let ascii_image = convert(img, columns, scale);
+
+//     std::fs::write(output, ascii_image.join("\n"))?;
+//     println!("{}", ascii_image.join("\n"));
+//     Ok(())
+// }
+
+mod color;
+
+fn main() {
+    let image_path = "/mnt/c/Users/Albert/Downloads/fish_sam.jpeg";
     let img = image::open(image_path).unwrap();
-    let ascii_image = convert(img, columns, scale);
-    
-    std::fs::write(output, ascii_image.join("\n"))?;
-    println!("{}", ascii_image.join("\n"));
-    Ok(())
+    let result = color::image_to_ansi(&img, 100, 100);
+    println!("{}", result.len());
 }
+
